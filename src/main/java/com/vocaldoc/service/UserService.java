@@ -1,5 +1,6 @@
 package com.vocaldoc.service;
 
+import com.vocaldoc.dto.LoginRequestDTO;
 import com.vocaldoc.dto.UserRequestDTO;
 import com.vocaldoc.dto.UserResponseDTO;
 import com.vocaldoc.model.User;
@@ -57,6 +58,27 @@ public class UserService {
         }
 
         return responseList;
+    }
+
+    public UserResponseDTO login(String email, String password){
+
+        UserResponseDTO response = new UserResponseDTO();
+        User user = userRepository.findByEmail(email);
+
+        if(user == null){
+            response.setMessage("User not Found");
+            return response;
+        }
+
+        if(!user.getPassword().equals(password)){
+            response.setMessage("Wrong Password");
+            return response;
+        }
+        response.setId(user.getId());
+        response.setEmail(user.getEmail());
+        response.setMessage("Login Successful");
+        return response;
+
     }
 
 }
